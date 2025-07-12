@@ -31,9 +31,8 @@ func TestFetchJSON(t *testing.T) {
 		"ReturnsJSONOnSuccessfulRequest": {
 			client: func() api.HTTPClient {
 				client := apitest.NewMockHTTPClient(t)
-				req, _ := http.NewRequestWithContext(t.Context(), http.MethodGet, mockURL, nil)
 				client.EXPECT().
-					Do(req).
+					Do(expectedRequest(t)).
 					Return(&http.Response{
 						StatusCode: http.StatusOK,
 						Body:       io.NopCloser(bytes.NewReader([]byte(`{"response":"json"}`))),
@@ -48,9 +47,8 @@ func TestFetchJSON(t *testing.T) {
 		"ReturnsErrorWhenDoRequestFails": {
 			client: func() api.HTTPClient {
 				client := apitest.NewMockHTTPClient(t)
-				req, _ := http.NewRequestWithContext(t.Context(), http.MethodGet, mockURL, nil)
 				client.EXPECT().
-					Do(req).
+					Do(expectedRequest(t)).
 					Return(&http.Response{}, errors.New("forced error")).
 					Once()
 
@@ -62,9 +60,8 @@ func TestFetchJSON(t *testing.T) {
 		"ReturnsErrorWhenJSONFailsToUnMarshalToType": {
 			client: func() api.HTTPClient {
 				client := apitest.NewMockHTTPClient(t)
-				req, _ := http.NewRequestWithContext(t.Context(), http.MethodGet, mockURL, nil)
 				client.EXPECT().
-					Do(req).
+					Do(expectedRequest(t)).
 					Return(&http.Response{
 						StatusCode: http.StatusOK,
 						Body:       io.NopCloser(bytes.NewReader([]byte("thishoulderror"))),
@@ -94,4 +91,13 @@ func TestFetchJSON(t *testing.T) {
 			assert.Equal(t, tc.expectedResponse, response)
 		})
 	}
+}
+
+func expectedRequest(t *testing.T) *http.Request {
+	t.Helper()
+
+	req, _ := http.NewRequestWithContext(t.Context(), http.MethodGet, mockURL, nil)
+	req.Header.Add("Accept", "application/json")
+
+	return req
 }
