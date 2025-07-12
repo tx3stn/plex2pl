@@ -30,4 +30,3 @@ test:
 .PHONY: validate-schema
 validate-schema:
 	@$(ajv-docker) compile -s /repo/.schema/schema.json
-
