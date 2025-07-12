@@ -9,6 +9,7 @@ linters:
     - godox  # TODO statements are useful and shouldn't make a linter error.
     - exhaustruct  # more annoying than useful.
     - forbidigo
+    - noinlineerr  # inline errors are good
   exclusions:
     rules:
       - path: 'internal\/flags\/vars\.go'
