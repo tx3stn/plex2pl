@@ -50,6 +50,28 @@ func (c Client) GetPlaylists(ctx context.Context) ([]Playlist, error) {
 	return resp.MediaContainer.Metadata, nil
 }
 
+// GetAudioPlaylists gets all playlists and filters the response to just audio ones.
+func (c Client) GetAudioPlaylists(ctx context.Context) ([]Playlist, error) {
+	allPlaylists, err := c.GetPlaylists(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	audioPlaylists := []Playlist{}
+
+	for _, playlist := range allPlaylists {
+		if playlist.PlaylistType == "audio" {
+			audioPlaylists = append(audioPlaylists, playlist)
+		}
+	}
+
+	if len(audioPlaylists) == 0 {
+		return []Playlist{}, ErrNoAudioPlaylists
+	}
+
+	return audioPlaylists, err
+}
+
 // getPlaylistsResponse is the response wrapper for the GetPlaylists request to align
 // with how plex returns the data.
 type getPlaylistsResponse struct {

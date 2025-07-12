@@ -37,12 +37,20 @@ func Run() error {
 
 	ctx := context.Background()
 
-	playlists, err := p.GetPlaylists(ctx)
+	playlists, err := p.GetAudioPlaylists(ctx)
 	if err != nil {
 		return fmt.Errorf("error getting playlists: %w", err)
 	}
 
-	log.Info("%+v", playlists)
+	for i, v := range playlists {
+		log.Info("%d: %+v", i, v)
+	}
+
+	// TODO:
+	// 1. filter out to audio only
+	// 2. get playlist by ID to get track data
+	// 3. add track data to m3u file
+	// 4. save m3u playlist
 
 	return nil
 }
