@@ -15,6 +15,10 @@ build:
 build-image:
 	@docker build --tag ${BINARY_NAME}:local .
 
+.PHONY: generate-mocks
+generate-mocks:
+	@docker run --rm -v "${PWD}":/src -w /src vektra/mockery:3
+
 .PHONY: install
 install: build
 	@sudo cp ./${BINARY_NAME} /usr/local/bin/${BINARY_NAME}
@@ -30,4 +34,3 @@ test:
 .PHONY: validate-schema
 validate-schema:
 	@$(ajv-docker) compile -s /repo/.schema/schema.json
-

@@ -1,0 +1,17 @@
+all: false
+dir: '{{.InterfaceDir}}/{{.SrcPackageName}}test'
+filename: 'mocks.go'
+force-file-write: false
+formatter: goimports
+log-level: info
+structname: '{{.Mock}}{{.InterfaceName}}'
+pkgname: '{{.SrcPackageName}}test'
+recursive: false
+require-template-schema-exists: true
+template: testify
+template-schema: '{{.Template}}.schema.json'
+packages:
+  github.com/tx3stn/plex2m3u/internal:
+    config:
+      all: true
+      recursive: true

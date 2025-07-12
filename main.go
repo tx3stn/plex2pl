@@ -1,13 +1,23 @@
 // Package main is the entrypoint of the CLI.
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
 
-// Version is the project version set at build time.
-//
-//nolint:gochecknoglobals
-var Version string
+	"github.com/tx3stn/plex2m3u/cmd"
+)
 
 func main() {
-	fmt.Println("get those playlists")
+	code := 0
+
+	defer func() {
+		os.Exit(code)
+	}()
+
+	if err := cmd.Run(); err != nil {
+		code = 1
+
+		fmt.Printf("%s\n", err.Error())
+	}
 }
