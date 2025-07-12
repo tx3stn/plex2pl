@@ -15,7 +15,6 @@ type Client struct {
 	serverURL  string
 	authToken  string
 	log        *logger.Basic
-	// playlistFetcher func(context.Context, api.HTTPClient, string, *logger.Basic) (getPlaylistsResponse, error)
 }
 
 // NewClient creates a new instance of the Client struct.
@@ -25,7 +24,6 @@ func NewClient(httpClient api.HTTPClient, url string, token string, log *logger.
 		serverURL:  url,
 		authToken:  token,
 		log:        log,
-		// playlistFetcher: api.FetchJSON[getPlaylistsResponse],
 	}
 }
 

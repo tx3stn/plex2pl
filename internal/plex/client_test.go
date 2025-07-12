@@ -34,7 +34,7 @@ const (
 		"size":0,
 		"metadata":[
 			{"title":"movie mondays","playlistType":"video"},
-			{"title":"top files of 2025","playlistType":"video"}
+			{"title":"top films of 2025","playlistType":"video"}
 		]
 	}
 }`
