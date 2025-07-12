@@ -49,34 +49,12 @@ func TestGetPlaylists(t *testing.T) {
 		expected      []plex.Playlist
 	}{
 		"ReturnsErrorIfNoPlaylistsInResponse": {
-			httpClient: func() api.HTTPClient {
-				client := apitest.NewMockHTTPClient(t)
-
-				client.EXPECT().
-					Do(mock.MatchedBy(matchRequest())).
-					Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(bytes.NewReader([]byte(noPlaylists))),
-					}, nil)
-
-				return client
-			},
+			httpClient:    mockHTTPClientWithResponse(t, noPlaylists),
 			expectedError: plex.ErrNoPlaylists,
 			expected:      []plex.Playlist{},
 		},
 		"ReturnsPlaylistsIncludedInReponse": {
-			httpClient: func() api.HTTPClient {
-				client := apitest.NewMockHTTPClient(t)
-
-				client.EXPECT().
-					Do(mock.MatchedBy(matchRequest())).
-					Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(bytes.NewReader([]byte(playlists))),
-					}, nil)
-
-				return client
-			},
+			httpClient:    mockHTTPClientWithResponse(t, playlists),
 			expectedError: nil,
 			expected: []plex.Playlist{
 				{Title: "2020 jamz", PlaylistType: "audio"},
@@ -115,18 +93,7 @@ func TestGetAudioPlaylists(t *testing.T) {
 		expected      []plex.Playlist
 	}{
 		"ReturnsOnlyAudioPlaylistsIncludedInReponse": {
-			httpClient: func() api.HTTPClient {
-				client := apitest.NewMockHTTPClient(t)
-
-				client.EXPECT().
-					Do(mock.MatchedBy(matchRequest())).
-					Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(bytes.NewReader([]byte(playlists))),
-					}, nil)
-
-				return client
-			},
+			httpClient:    mockHTTPClientWithResponse(t, playlists),
 			expectedError: nil,
 			expected: []plex.Playlist{
 				{Title: "2020 jamz", PlaylistType: "audio"},
@@ -134,18 +101,7 @@ func TestGetAudioPlaylists(t *testing.T) {
 			},
 		},
 		"ReturnsErrorIfNoAudioPlaylistsInResponse": {
-			httpClient: func() api.HTTPClient {
-				client := apitest.NewMockHTTPClient(t)
-
-				client.EXPECT().
-					Do(mock.MatchedBy(matchRequest())).
-					Return(&http.Response{
-						StatusCode: http.StatusOK,
-						Body:       io.NopCloser(bytes.NewReader([]byte(onlyVideoPlaylists))),
-					}, nil)
-
-				return client
-			},
+			httpClient:    mockHTTPClientWithResponse(t, onlyVideoPlaylists),
 			expectedError: plex.ErrNoAudioPlaylists,
 			expected:      []plex.Playlist{},
 		},
@@ -171,9 +127,22 @@ func TestGetAudioPlaylists(t *testing.T) {
 	}
 }
 
-func matchRequest() func(*http.Request) bool {
-	return func(req *http.Request) bool {
-		return req.Method == http.MethodGet &&
-			strings.Contains(req.URL.String(), mockURL+"/playlists?X-Plex-Token=")
+func mockHTTPClientWithResponse(t *testing.T, responseJSON string) func() api.HTTPClient {
+	t.Helper()
+
+	return func() api.HTTPClient {
+		client := apitest.NewMockHTTPClient(t)
+
+		client.EXPECT().
+			Do(mock.MatchedBy(func(req *http.Request) bool {
+				return req.Method == http.MethodGet &&
+					strings.Contains(req.URL.String(), mockURL+"/playlists?X-Plex-Token=")
+			})).
+			Return(&http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(bytes.NewReader([]byte(responseJSON))),
+			}, nil)
+
+		return client
 	}
 }
