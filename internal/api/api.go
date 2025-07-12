@@ -32,6 +32,10 @@ func FetchJSON[T any](
 		return responseJSON, fmt.Errorf("error building request: %w", err)
 	}
 
+	req.Header.Add("Accept", "application/json")
+
+	log.Debug("getting url: %s", url)
+
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Error(ErrMakingRequest.Error(), err)

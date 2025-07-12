@@ -29,7 +29,7 @@ lint:
 
 .PHONY: test
 test:
-	@CGO_ENABLED=1 go test -race -cover -v ${DIR}
+	@CGO_ENABLED=1 go test -race -cover ${DIR}
 
 .PHONY: validate-schema
 validate-schema:
