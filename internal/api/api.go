@@ -34,6 +34,8 @@ func FetchJSON[T any](
 
 	req.Header.Add("Accept", "application/json")
 
+	log.Debug("getting url: %s", url)
+
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Error(ErrMakingRequest.Error(), err)

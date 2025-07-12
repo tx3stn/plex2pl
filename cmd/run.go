@@ -3,6 +3,7 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -42,13 +43,26 @@ func Run() error {
 		return fmt.Errorf("error getting playlists: %w", err)
 	}
 
+	log.Info("found %d audio playlists", len(playlists))
+
 	for i, v := range playlists {
-		log.Info("%d: %+v", i, v)
+		log.Info("%d: playlist '%s'", i, v.Title)
+
+		items, err := p.GetPlaylistItems(ctx, v.RatingKey)
+		if errors.Is(err, plex.ErrNoItemsInPlaylist) {
+			log.Info("playlist '%s' contains no items", v.Title)
+
+			continue
+		}
+
+		if err != nil {
+			return fmt.Errorf("error getting playlist items: %w", err)
+		}
+
+		log.Info("title: %s", items[0].Title)
 	}
 
 	// TODO:
-	// 1. filter out to audio only
-	// 2. get playlist by ID to get track data
 	// 3. add track data to m3u file
 	// 4. save m3u playlist
 

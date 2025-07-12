@@ -19,8 +19,35 @@ type Playlist struct {
 	UpdatedAt    int    `json:"updatedAt,omitempty"`
 }
 
-// MediaContainer is the structure that wraps the list of playlists.
-type MediaContainer struct {
-	Size     int        `json:"size,omitempty"`
-	Metadata []Playlist `json:"metadata,omitempty"`
+// PlaylistItem is the strcuture of the detailed information about a playlist.
+type PlaylistItem struct {
+	Title            string          `json:"title,omitempty"`
+	GrandParentTitle string          `json:"grandParentTitle,omitempty"`
+	ParentTitle      string          `json:"parentTitle,omitempty"`
+	Media            []PlaylistMedia `json:"media,omitempty"`
+}
+
+// PlaylistMedia represents the data in the 'Media' section of the 'Metadata' for the
+// playlist item.
+type PlaylistMedia struct {
+	ID               int         `json:"id,omitempty"`
+	Duration         int         `json:"duration,omitempty"`
+	Bitrate          int         `json:"bitrate,omitempty"`
+	AudioChannels    int         `json:"audioChannels,omitempty"`
+	AudioCodec       string      `json:"audioCodec,omitempty"`
+	Container        string      `json:"container,omitempty"`
+	HasVoiceActivity bool        `json:"hasVoiceActivity,omitempty"`
+	Part             []MediaPart `json:"part,omitempty"`
+}
+
+// MediaPart represents the data in the 'Part' setion of the 'Media' file in the
+// playlist item.
+type MediaPart struct {
+	ID           int    `json:"id,omitempty"`
+	Key          string `json:"key,omitempty"`
+	Duration     int    `json:"duration,omitempty"`
+	File         string `json:"file,omitempty"`
+	Size         int    `json:"size,omitempty"`
+	Container    string `json:"container,omitempty"`
+	HasThumbnail string `json:"hasThumbnail,omitempty"`
 }

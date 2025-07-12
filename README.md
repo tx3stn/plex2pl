@@ -11,3 +11,4 @@ Convert plex playlists into m3u format for use in other places e.g. Jellyfin
 ## References
 
 - https://github.com/XDGFX/PPP
+- https://blog.fileformat.com/audio/common-errors-when-creating-or-editing-extm3u-files-and-how-to-fix-them/

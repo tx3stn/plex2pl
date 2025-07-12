@@ -31,17 +31,10 @@ func NewClient(httpClient api.HTTPClient, url string, token string, log *logger.
 
 // GetPlaylists returns all playlists.
 func (c Client) GetPlaylists(ctx context.Context) ([]Playlist, error) {
-	playlistsURL := fmt.Sprintf("%s/playlists?X-Plex-Token=%s", c.serverURL, c.authToken)
-
-	c.log.Info("fetching playlists")
-	c.log.Debug("playlist url: %s", playlistsURL)
-
-	resp, err := api.FetchJSON[getPlaylistsResponse](ctx, c.httpClient, playlistsURL, c.log)
+	resp, err := api.FetchJSON[getPlaylistsResponse](ctx, c.httpClient, c.url("playlists"), c.log)
 	if err != nil {
 		return nil, err
 	}
-
-	c.log.Debug("response: %+v", resp)
 
 	if len(resp.MediaContainer.Metadata) == 0 {
 		return []Playlist{}, ErrNoPlaylists
@@ -72,8 +65,43 @@ func (c Client) GetAudioPlaylists(ctx context.Context) ([]Playlist, error) {
 	return audioPlaylists, err
 }
 
+// GetPlaylistItems fetches detailed information about the playlist contents.
+func (c Client) GetPlaylistItems(ctx context.Context, playlistID string) ([]PlaylistItem, error) {
+	resp, err := api.FetchJSON[getPlaylistItemsResponse](
+		ctx,
+		c.httpClient,
+		c.url(fmt.Sprintf("playlists/%s/items", playlistID)),
+		c.log,
+	)
+	if err != nil {
+		return []PlaylistItem{}, err
+	}
+
+	if resp.MediaContainer.Size == 0 {
+		return []PlaylistItem{}, ErrNoItemsInPlaylist
+	}
+
+	return resp.MediaContainer.Metadata, nil
+}
+
+func (c Client) url(path string) string {
+	return fmt.Sprintf("%s/%s?X-Plex-Token=%s", c.serverURL, path, c.authToken)
+}
+
 // getPlaylistsResponse is the response wrapper for the GetPlaylists request to align
 // with how plex returns the data.
 type getPlaylistsResponse struct {
-	MediaContainer MediaContainer `json:"mediaContainer"`
+	MediaContainer struct {
+		Size     int        `json:"size,omitempty"`
+		Metadata []Playlist `json:"metadata,omitempty"`
+	} `json:"mediaContainer"`
+}
+
+// getPlaylistItemResponse is the response wrapper for the GetPlaylistItems request to align
+// with how plex returns the data.
+type getPlaylistItemsResponse struct {
+	MediaContainer struct {
+		Size     int            `json:"size,omitempty"`
+		Metadata []PlaylistItem `json:"metadata,omitempty"`
+	} `json:"mediaContainer"`
 }
