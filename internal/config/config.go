@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"github.com/tx3stn/plex2m3u/internal/flags"
 )
 
 // Config represents the configuration options required to be defined in the config file.
@@ -34,6 +36,7 @@ func Get(fileFlag string) (Config, error) {
 		file = fileFlag
 	} else {
 		file = FindConfigFile()
+		flags.ConfigFile = file
 	}
 
 	if file == "" {
