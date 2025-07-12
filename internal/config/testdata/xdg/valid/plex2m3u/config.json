@@ -1,0 +1,7 @@
+{
+	"$schema": "",
+	"plexServerUrl": "",
+	"plexAuthToken": "",
+	"outDirectory": "",
+	"verbose": false
+}

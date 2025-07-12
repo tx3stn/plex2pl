@@ -1,0 +1,32 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema",
+	"$id": "https://github.com/tx3stn/plex2m3u/blob/main/.schema/schema.json",
+	"title": "JSON schema for plex2m3u config file.",
+	"description": "configuration file to set required values for plex2m3u",
+	"type": "object",
+	"properties": {
+		"plexServerUrl": {
+			"description": "The URL of your plex server.",
+			"type": "string"
+		},
+		"plexAuthToken": {
+			"description": "The token to authenticate with your plex server.",
+			"type": "string"
+		},
+		"outDirectory": {
+			"description": "The output directory of the m3u files.",
+			"type": "string"
+		},
+		"verbose": {
+			"description": "If you want to show verbose output when running commands.",
+			"type": "boolean"
+		}
+	},
+	"required": [
+		"plexServerUrl",
+		"plexAuthToken",
+		"outDirectory",
+		"verbose"
+	],
+	"additionalProperties": false
+}

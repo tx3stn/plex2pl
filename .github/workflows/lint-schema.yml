@@ -1,0 +1,21 @@
+name: lint schema
+
+on:
+  pull_request:
+    paths:
+      - .schema/*
+
+jobs:
+  lint-schema:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install -g ajv-cli
+        name: install ajv-cli
+      - run: ajv --spec draft7 compile -s .schema/schema.json
+        name: validate schema
