@@ -17,6 +17,8 @@ type HTTPClient interface {
 }
 
 // FetchJSON makes a GET request and returns the json response marshalled as type T.
+//
+//nolint:ireturn
 func FetchJSON[T any](
 	ctx context.Context,
 	client HTTPClient,
