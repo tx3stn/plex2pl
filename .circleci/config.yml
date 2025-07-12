@@ -11,7 +11,7 @@ workflows:
     jobs:
       - vrsn/bump-version:
           bump-type: patch
-          ssh-key-fingerprint: replace
+          ssh-key-fingerprint: SHA256:88/xwWWWbPnWpglUYV+lZmOxJV5QCoKhW3Bz7LZCOe4
           filters:
             branches:
               only:
