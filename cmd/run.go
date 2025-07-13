@@ -10,6 +10,7 @@ import (
 	"github.com/tx3stn/plex2m3u/internal/config"
 	"github.com/tx3stn/plex2m3u/internal/flags"
 	"github.com/tx3stn/plex2m3u/internal/logger"
+	"github.com/tx3stn/plex2m3u/internal/m3u"
 	"github.com/tx3stn/plex2m3u/internal/plex"
 )
 
@@ -46,7 +47,9 @@ func Run() error {
 	log.Info("found %d audio playlists", len(playlists))
 
 	for i, v := range playlists {
-		log.Info("%d: playlist '%s'", i, v.Title)
+		log.Info("creating playlist %d: '%s'", i, v.Title)
+
+		m3uPlaylist := m3u.NewPlaylist(v.Title)
 
 		items, err := p.GetPlaylistItems(ctx, v.RatingKey)
 		if errors.Is(err, plex.ErrNoItemsInPlaylist) {
@@ -59,12 +62,14 @@ func Run() error {
 			return fmt.Errorf("error getting playlist items: %w", err)
 		}
 
-		log.Info("title: %s", items[0].Title)
-	}
+		for _, item := range items {
+			m3uPlaylist.AddItem(m3u.NewPlaylistItem(item))
+		}
 
-	// TODO:
-	// 3. add track data to m3u file
-	// 4. save m3u playlist
+		if err = m3uPlaylist.WriteFile(cfg.OutDirectory); err != nil {
+			return fmt.Errorf("error writing m3u file: %w", err)
+		}
+	}
 
 	return nil
 }

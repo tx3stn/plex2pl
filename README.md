@@ -6,7 +6,7 @@ Convert plex playlists into m3u format for use in other places e.g. Jellyfin
 
 1. [x] - cli command that reads from config file for input paths and output paths
 2. [x] - fetch playlists from plex with token and iterate over them
-3. [ ] - for playlist create an m3u file in the specified output path
+3. [x] - for playlist create an m3u file in the specified output path
 
 ## References
 
