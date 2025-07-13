@@ -1,4 +1,4 @@
-# TODO: check if scracth container would be fine here.
-FROM alpine:3.22.0
+FROM gcr.io/distroless/static:nonroot
+COPY .schema /config
 COPY plex2m3u /usr/bin/plex2m3u
 ENTRYPOINT ["plex2m3u"]
