@@ -5,8 +5,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/tx3stn/plex2m3u/internal/api"
-	"github.com/tx3stn/plex2m3u/internal/logger"
+	"github.com/tx3stn/plex2pl/internal/api"
+	"github.com/tx3stn/plex2pl/internal/logger"
 )
 
 // Client is the plex client for making requests to yoru plex server.

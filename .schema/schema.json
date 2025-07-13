@@ -1,8 +1,8 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema",
-	"$id": "https://github.com/tx3stn/plex2m3u/blob/main/.schema/schema.json",
-	"title": "JSON schema for plex2m3u config file.",
-	"description": "configuration file to set required values for plex2m3u",
+	"$id": "https://github.com/tx3stn/plex2pl/blob/main/.schema/schema.json",
+	"title": "JSON schema for plex2pl config file.",
+	"description": "configuration file to set required values for plex2pl",
 	"type": "object",
 	"properties": {
 		"$schema": {

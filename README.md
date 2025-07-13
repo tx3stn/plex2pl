@@ -1,4 +1,4 @@
-# plex2m3u
+# plex2pl
 
 Convert plex playlists into m3u format for use in other places e.g. Jellyfin
 
@@ -7,7 +7,7 @@ Convert plex playlists into m3u format for use in other places e.g. Jellyfin
 ### Download from GitHub
 
 Find the latest version for your system on the
-[GitHub releases page](https://github.com/tx3stn/plex2m3u/releases).
+[GitHub releases page](https://github.com/tx3stn/plex2pl/releases).
 
 ### Build it locally
 
@@ -17,43 +17,43 @@ If you have go installed, you can clone this repo and run:
 make install
 ```
 
-This will build the binary and then copy it to `/usr/local/bin/plex2m3u` so it will be
+This will build the binary and then copy it to `/usr/local/bin/plex2pl` so it will be
 available on your path. Nothing more to it.
 
 ### Run the Docker container
 
 Get the Docker container from the
-[GitHub container registry](https://github.com/tx3stn/plex2m3u/pkgs/container/plex2m3u).
+[GitHub container registry](https://github.com/tx3stn/plex2pl/pkgs/container/plex2pl).
 
 ```bash
-docker pull ghcr.io/tx3stn/plex2m3u:latest
+docker pull ghcr.io/tx3stn/plex2pl:latest
 ```
 
 See [Running in Docker](#running-in-docker) for more details.
 
 ## Configuring
 
-All of the configuration required for `plex2m3u` is found in the config file.
+All of the configuration required for `plex2pl` is found in the config file.
 
 The default expected locations for this are:
-* `$XDG_CONFIG_DIR/plex2m3u/config.json`
-* `$HOME/.config/plex2m3u/config.json`
+* `$XDG_CONFIG_DIR/plex2pl/config.json`
+* `$HOME/.config/plex2pl/config.json`
 
 If you want to use a file located somewhere else you can pass the `--config` flag, e.g.:
 
 ```bash
-plex2m3u --config /my/custom/config/file/path/config.json
+plex2pl --config /my/custom/config/file/path/config.json
 ```
 
 > [!TIP]
 > To get in editor feedback/validation of your schema, add the following to the top of your json file:
 > ``` json
-> "$schema": "https://raw.githubusercontent.com/tx3stn/plex2m3u/refs/heads/main/.schema/schema.json"
+> "$schema": "https://raw.githubusercontent.com/tx3stn/plex2pl/refs/heads/main/.schema/schema.json"
 > ```
 
 ### `plexServerUrl`
 
-The url used to access your plex server, from the host device `plex2m3u` is running on.
+The url used to access your plex server, from the host device `plex2pl` is running on.
 
 ### `plexAuthToken`
 
@@ -76,7 +76,7 @@ Useful for debugging.
 Can be enabled at run time (overriding the value in your config file), with the `--verbose` flag, e.g.:
 
 ```bash
-plex2m3u --verbose
+plex2pl --verbose
 ```
 
 ## Usage
@@ -84,7 +84,7 @@ plex2m3u --verbose
 Once your config file is created, just run it:
 
 ```bash
-plex2m3u
+plex2pl
 ```
 
 That's it 🎉
@@ -110,10 +110,10 @@ Putting this all together looks like this:
 
 ```bash
 docker run --rm -v "/media/dir/music/playlists:/media/dir/music/playlists" \
-	-v "/home/user/.config/plex2mu3:/config" \
+	-v "/home/user/.config/plex2pl:/config" \
 	--network host \
 	-u $(id -u):$(id -g) \
-	plex2m3u:local --config "/config/config.json"
+	plex2pl:local --config "/config/config.json"
 ```
 
 ## References

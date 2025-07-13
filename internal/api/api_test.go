@@ -9,9 +9,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/tx3stn/plex2m3u/internal/api"
-	"github.com/tx3stn/plex2m3u/internal/api/apitest"
-	"github.com/tx3stn/plex2m3u/internal/logger"
+	"github.com/tx3stn/plex2pl/internal/api"
+	"github.com/tx3stn/plex2pl/internal/api/apitest"
+	"github.com/tx3stn/plex2pl/internal/logger"
 )
 
 const (

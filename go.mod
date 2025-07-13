@@ -1,4 +1,4 @@
-module github.com/tx3stn/plex2m3u
+module github.com/tx3stn/plex2pl
 
 go 1.24.2
 

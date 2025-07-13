@@ -8,7 +8,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/tx3stn/plex2m3u/internal/logger"
+	"github.com/tx3stn/plex2pl/internal/logger"
 )
 
 // HTTPClient is a convenience interface to make testing FetchJSON easier.
