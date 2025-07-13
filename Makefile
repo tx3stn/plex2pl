@@ -13,7 +13,7 @@ build:
 
 .PHONY: build-image
 build-image:
-	@docker build --tag ${BINARY_NAME}:local .
+	@docker --debug build --tag ${BINARY_NAME}:local .
 
 .PHONY: generate-mocks
 generate-mocks:
