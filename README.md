@@ -110,7 +110,7 @@ Putting this all together looks like this:
 
 ```bash
 docker run --rm -v "/media/dir/music/playlists:/media/dir/music/playlists" \
-	-v "/home/user/.config/plex2mu3:/config" \
+	-v "/home/user/.config/plex2pl:/config" \
 	--network host \
 	-u $(id -u):$(id -g) \
 	plex2pl:local --config "/config/config.json"
