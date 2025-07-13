@@ -1,6 +1,12 @@
 # plex2pl
 
-Convert plex playlists into m3u format for use in other places e.g. Jellyfin
+Convert plex playlists into other playlist formats for use elsewhere.
+
+Currently support formats:
+* `m3u`
+
+Upcoming:
+* `jellyfin` native
 
 ## Install
 
