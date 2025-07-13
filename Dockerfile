@@ -1,4 +1,10 @@
+FROM alpine:3.22 AS source
+RUN mkdir /config
+
 FROM gcr.io/distroless/static:nonroot
-COPY .schema /config
+
+COPY --from=source /config /config
+
 COPY plex2pl /usr/bin/plex2pl
+
 ENTRYPOINT ["plex2pl"]
