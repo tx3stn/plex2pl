@@ -14,10 +14,10 @@ builds:
 
 dockers:
   - image_templates:
-      - "ghcr.io/tx3stn/vrsn:{{ .Version }}"
-      - "ghcr.io/tx3stn/vrsn:{{ .Major }}"
-      - "ghcr.io/tx3stn/vrsn:{{ .Major }}.{{ .Minor }}"
-      - "ghcr.io/tx3stn/vrsn:latest"
+      - "ghcr.io/tx3stn/plex2pl:{{ .Version }}"
+      - "ghcr.io/tx3stn/plex2pl:{{ .Major }}"
+      - "ghcr.io/tx3stn/plex2pl:{{ .Major }}.{{ .Minor }}"
+      - "ghcr.io/tx3stn/plex2pl:latest"
     dockerfile: Dockerfile
     build_flag_templates:
       - --label=org.opencontainers.image.title={{ .ProjectName }}
