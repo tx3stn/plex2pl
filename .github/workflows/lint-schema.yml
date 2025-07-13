@@ -19,3 +19,5 @@ jobs:
         name: install ajv-cli
       - run: ajv --spec draft7 compile -s .schema/schema.json
         name: validate schema
+      - run: ajv --spec draft7 validate -s .schema/schema.json -d .schema/example.json
+        name: lint example config

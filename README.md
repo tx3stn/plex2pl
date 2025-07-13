@@ -31,12 +31,9 @@ docker pull ghcr.io/tx3stn/plex2m3u:latest
 
 See [Running in Docker](#running-in-docker) for more details.
 
-## Usage
+## Configuring
 
-1. Create your config file.
-An example can be seen in [.schema/example.json](.schema/example.json)
-
-This file tells the tool how to work, if it's not found then `plex2m3u` can't do anything.
+All of the configuration required for `plex2m3u` is found in the config file.
 
 The default expected locations for this are:
 * `$XDG_CONFIG_DIR/plex2m3u/config.json`
@@ -48,20 +45,42 @@ If you want to use a file located somewhere else you can pass the `--config` fla
 plex2m3u --config /my/custom/config/file/path/config.json
 ```
 
-> [!NOTE]
-> To get the data from Plex, you need an auth token.
->
-> See [their docs on how you can find yours](https://support.plex.tv/articles/204059436).
+> [!TIP]
+> To get in editor feedback/validation of your schema, add the following:
+> ``` json
+> "$schema": "https://raw.githubusercontent.com/tx3stn/plex2m3u/refs/heads/main/.schema/schema.json"
+> ```
 
-2. Run it!
-That's it, once your config file exists you can just run `plex2m3u` and it will get all of your
-audio playlists and create an `m3u` file for them in the specified output path.
+### `plexServerUrl`
 
-If you want to see more information about what's happening during a run, you can enable verbose output with the `--verbose` flag, e.g.:
+The url used to access your plex server, from the host device `plex2m3u` is running on.
+
+### `plexAuthToken`
+
+The token required to authenticate the requests against the Plex server.
+See [their docs on how you can find yours](https://support.plex.tv/articles/204059436).
+
+### `OutDirectory`
+
+The location of the directory you want to generate the playlists in.
+
+Each playlist will be created as a file with the playlist title as the name in this directory.
+
+### `verbose`
+
+If you want to see verbose output from the tool running.
+
+Useful for debugging.
+
+Can be enabled at run time (overriding the value in your config file), with the `--verbose` flag, e.g.:
 
 ```bash
 plex2m3u --verbose
 ```
+
+## Usage
+
+Once your config file is created, just run `plex2m3u` and it will handle the rest.
 
 ## Running in Docker
 
