@@ -27,10 +27,11 @@ install: build
 lint:
 	@golangci-lint run -v ${DIR}
 
+.PHONY: lint-schema
+lint-schema:
+	@$(ajv-docker) compile -s /repo/.schema/schema.json
+	@$(ajv-docker) validate -s /repo/.schema/schema.json -d /repo/.schema/example.json
+
 .PHONY: test
 test:
 	@CGO_ENABLED=1 go test -race -cover ${DIR}
-
-.PHONY: validate-schema
-validate-schema:
-	@$(ajv-docker) compile -s /repo/.schema/schema.json

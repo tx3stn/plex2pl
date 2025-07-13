@@ -5,6 +5,10 @@
 	"description": "configuration file to set required values for plex2m3u",
 	"type": "object",
 	"properties": {
+		"$schema": {
+			"description": "The URL of the JSON schema for type completion etc.",
+			"type": "string"
+		},
 		"plexServerUrl": {
 			"description": "The URL of your plex server.",
 			"type": "string"
