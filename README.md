@@ -1,12 +1,33 @@
-# plex2pl
+<!-- markdownlint-disable MD033 -->
+<h1 align="center">plex2pl</h1>
 
-Convert plex playlists into other playlist formats for use elsewhere.
+<p align="center">
+  <em>Convert your plex playlists into other formats for use with other programs.</em>
+</p>
+
 
 Currently support formats:
 * `m3u`
 
 Upcoming:
 * `jellyfin` native
+
+## Contents
+
+- [Why](#why)
+- [Install](#install)
+  - [Download from GitHub](#download-from-github)
+  - [Build it locally](#build-it-locally)
+  - [Run the Docker container](#run-the-docker-container)
+- [Configuring](#configuring)
+- [Usage](#usage)
+- [Running in Docker](#running-in-docker)
+- [References](#references)
+
+## Why
+
+I use plexamp for listening to music, but have migrated all other media to Jellyfin.
+I wanted to manage my playlist via Plex, but have a compatible solution for other providers for switching in future, or trying out things like [FinAmp](https://github.com/jmshrv/finamp)
 
 ## Install
 
