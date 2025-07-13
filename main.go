@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/tx3stn/plex2m3u/cmd"
+	"github.com/tx3stn/plex2pl/cmd"
 )
 
 func main() {

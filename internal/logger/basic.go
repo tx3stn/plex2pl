@@ -42,5 +42,5 @@ func (b Basic) Info(msg string, args ...any) {
 }
 
 func (b Basic) logLine(level string, msg string) {
-	fmt.Printf("[plex2m3u] %s: %s\n", level, msg)
+	fmt.Printf("[plex2pl] %s: %s\n", level, msg)
 }

@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/tx3stn/plex2m3u/internal/config"
+	"github.com/tx3stn/plex2pl/internal/config"
 )
 
 func TestFindConfigFile(t *testing.T) {
@@ -18,13 +18,13 @@ func TestFindConfigFile(t *testing.T) {
 		"ReturnsXdgFileWhenExists": {
 			xdgEnvValue:   "testdata/xdg/valid",
 			homeEnvValue:  "testdata/home/",
-			expected:      "testdata/xdg/valid/plex2m3u/config.json",
+			expected:      "testdata/xdg/valid/plex2pl/config.json",
 			expectedError: nil,
 		},
 		"ReturnsHomeFileWhenExists": {
 			xdgEnvValue:   "",
 			homeEnvValue:  "testdata/home/",
-			expected:      "testdata/home/.config/plex2m3u/config.json",
+			expected:      "testdata/home/.config/plex2pl/config.json",
 			expectedError: nil,
 		},
 		"ReturnsEmptyStringWhenNoEnvVarsAreSet": {
@@ -62,13 +62,13 @@ func TestGet(t *testing.T) {
 			expected:      config.Config{},
 		},
 		"ReturnsFileSpecifiedByFileFlagIfValid": {
-			fileFlag:      "testdata/xdg/valid/plex2m3u/config.json",
+			fileFlag:      "testdata/xdg/valid/plex2pl/config.json",
 			xdgEnvValue:   "",
 			expectedError: nil,
 			expected:      config.Config{},
 		},
 		"ReturnsErrorIfFileFlagFileIsNotFound": {
-			fileFlag:      "testdata/xdg/valid/plex2m3u/foo.json",
+			fileFlag:      "testdata/xdg/valid/plex2pl/foo.json",
 			xdgEnvValue:   "testdata/xdg/valid",
 			expectedError: config.ErrConfigNotFound,
 			expected:      config.Config{},

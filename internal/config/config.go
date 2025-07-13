@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/tx3stn/plex2m3u/internal/flags"
+	"github.com/tx3stn/plex2pl/internal/flags"
 )
 
 // Config represents the configuration options required to be defined in the config file.
@@ -63,7 +63,7 @@ func Get(fileFlag string) (Config, error) {
 //   - HOME/.config
 func FindConfigFile() string {
 	paths := []string{}
-	dirName := "plex2m3u"
+	dirName := "plex2pl"
 	configFileName := "config.json"
 
 	if xdg, ok := os.LookupEnv("XDG_CONFIG_DIR"); ok {

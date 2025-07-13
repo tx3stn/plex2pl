@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/tx3stn/plex2m3u/internal/config"
-	"github.com/tx3stn/plex2m3u/internal/flags"
-	"github.com/tx3stn/plex2m3u/internal/logger"
-	"github.com/tx3stn/plex2m3u/internal/m3u"
-	"github.com/tx3stn/plex2m3u/internal/plex"
+	"github.com/tx3stn/plex2pl/internal/config"
+	"github.com/tx3stn/plex2pl/internal/flags"
+	"github.com/tx3stn/plex2pl/internal/logger"
+	"github.com/tx3stn/plex2pl/internal/m3u"
+	"github.com/tx3stn/plex2pl/internal/plex"
 )
 
 // Version is the project version set at build time.

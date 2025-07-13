@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/tx3stn/plex2m3u/internal/plex"
+	"github.com/tx3stn/plex2pl/internal/plex"
 )
 
 // Playlist contains the data required to create the playlist file.

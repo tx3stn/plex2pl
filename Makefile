@@ -1,4 +1,4 @@
-BINARY_NAME=plex2m3u
+BINARY_NAME=plex2pl
 DIR ?= ./...
 PWD ?= $(shell pwd)
 VERSION ?= $(shell head -n 1 VERSION)
@@ -9,7 +9,7 @@ endef
 
 .PHONY: build
 build:
-	@CGO_ENABLED=0 go build -ldflags "-X github.com/tx3stn/plex2m3u/cmd.Version=${VERSION}" -o ${BINARY_NAME}
+	@CGO_ENABLED=0 go build -ldflags "-X github.com/tx3stn/plex2pl/cmd.Version=${VERSION}" -o ${BINARY_NAME}
 
 .PHONY: build-image
 build-image:
