@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/tx3stn/plex2pl/internal/plex"
 )
@@ -35,9 +36,12 @@ func (p *Playlist) WriteFile(dirPath string) error {
 
 `
 
+	var outputSb38 strings.Builder
 	for _, item := range p.Items {
-		output += item.FormatOutput()
+		outputSb38.WriteString(item.FormatOutput())
 	}
+
+	output += outputSb38.String()
 
 	outPath := filepath.Join(dirPath, p.Title+".m3u")
 

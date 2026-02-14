@@ -9,7 +9,8 @@ linters:
     - godox  # TODO statements are useful and shouldn't make a linter error.
     - exhaustruct  # more annoying than useful.
     - forbidigo
-    - noinlineerr  # inline errors are good
+    - noinlineerr  # we use inline errors
+    - wsl  # deprecated using wsl_v5
   exclusions:
     rules:
       - path: 'internal\/flags\/vars\.go'
@@ -24,7 +25,14 @@ linters:
       - text: 'unused-parameter: parameter \S+ seems to be unused, consider removing or renaming it as _'
         linters:
           - revive
+      - path: 'internal\/api\/*'
+        linters:
+          - revive
+        text: 'var-naming: avoid meaningless package names'
   settings:
+    cyclop:
+      max-complexity: 12
+      package-average: 0
     depguard:
       rules:
         "deprecated":
@@ -43,34 +51,31 @@ linters:
           deny:
             - pkg: math/rand$
               desc: Use math/rand/v2 instead, see https://go.dev/blog/randv2
-    exhaustruct:
-      # List of regular expressions to exclude struct packages and their names from checks.
-      # Regular expressions must match complete canonical struct package/name/structname.
-      # Default: []
-      exclude:
-        # std libs
-        - ^net/http.Client$
-        - ^net/http.Cookie$
-        - ^net/http.Request$
-        - ^net/http.Response$
-        - ^net/http.Server$
-        - ^net/http.Transport$
-        - ^net/url.URL$
-        - ^os/exec.Cmd$
-        - ^reflect.StructField$
-        # public libs
-        - ^github.com/Shopify/sarama.Config$
-        - ^github.com/Shopify/sarama.ProducerMessage$
-        - ^github.com/mitchellh/mapstructure.DecoderConfig$
-        - ^github.com/prometheus/client_golang/.+Opts$
-        - ^github.com/spf13/cobra.Command$
-        - ^github.com/spf13/cobra.CompletionOptions$
-        - ^github.com/stretchr/testify/mock.Mock$
-        - ^github.com/testcontainers/testcontainers-go.+Request$
-        - ^github.com/testcontainers/testcontainers-go.FromDockerfile$
-        - ^golang.org/x/tools/go/analysis.Analyzer$
-        - ^google.golang.org/protobuf/.+Options$
-        - ^gopkg.in/yaml.v3.Node$
+    funlen:
+      lines: 80
+      statements: 40
+      ignore-comments: true
+    mnd:
+      ignored-functions:
+        - os.MkdirAll
+        - os.WriteFile
+        - time.After
+        - time.NewTicker
+    usetesting:
+      context-background: true
+      context-todo: true
+      os-chdir: true
+      os-mkdir-temp: true
+      os-setenv: true
+      os-create-temp: true
+      os-temp-dir: true
+    wsl_v5:
+      allow-first-in-block: true
+      allow-whole-block: false
+      branch-max-lines: 2
+      case-max-lines: 0
+      disable:
+        - decl  # requires a newline between separate var statements which hurts readability
 
 formatters:
   enable:
