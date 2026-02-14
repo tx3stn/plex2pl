@@ -1,4 +1,4 @@
-FROM alpine:3.22 AS source
+FROM alpine:3.23 AS source
 RUN mkdir /config
 
 FROM gcr.io/distroless/static:nonroot

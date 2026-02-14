@@ -22,6 +22,7 @@ var Version string
 // Run runs the CLI.
 func Run() error {
 	flags.Create()
+
 	log := logger.NewBasic(flags.Verbose)
 
 	cfg, err := config.Get(flags.ConfigFile)

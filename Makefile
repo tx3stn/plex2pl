@@ -9,7 +9,7 @@ endef
 
 .PHONY: build
 build:
-	@CGO_ENABLED=0 go build -ldflags "-X github.com/tx3stn/plex2pl/cmd.Version=${VERSION}" -o ${BINARY_NAME}
+	@CGO_ENABLED=0 go build -ldflags "-s -w -X github.com/tx3stn/plex2pl/cmd.Version=${VERSION}" -o ${BINARY_NAME}
 
 .PHONY: build-image
 build-image:
@@ -25,7 +25,8 @@ install: build
 
 .PHONY: lint
 lint:
-	@golangci-lint run -v ${DIR}
+	@golangci-lint fmt ${DIR}
+	@golangci-lint run --fix -v ${DIR}
 
 .PHONY: lint-schema
 lint-schema:
@@ -35,3 +36,8 @@ lint-schema:
 .PHONY: test
 test:
 	@CGO_ENABLED=1 go test -race -cover ${DIR}
+
+.PHONY: testsum
+testsum:
+	@CGO_ENABLED=1 gotestsum --format-hide-empty-pkg --format pkgname-and-test-fails -- -race ${DIR}
+

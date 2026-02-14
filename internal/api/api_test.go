@@ -54,7 +54,7 @@ func TestFetchJSON(t *testing.T) {
 
 				return client
 			},
-			expectedResponse: map[string]interface{}(nil),
+			expectedResponse: map[string]any(nil),
 			expectedError:    api.ErrMakingRequest,
 		},
 		"ReturnsErrorWhenJSONFailsToUnMarshalToType": {
@@ -70,7 +70,7 @@ func TestFetchJSON(t *testing.T) {
 
 				return client
 			},
-			expectedResponse: map[string]interface{}(nil),
+			expectedResponse: map[string]any(nil),
 			expectedError:    api.ErrMashallingJSONToType,
 		},
 	}
