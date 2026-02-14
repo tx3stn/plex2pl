@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - .schema/*
+      - .github/workflows/lint-schema.yml
 
 jobs:
   lint-schema:
