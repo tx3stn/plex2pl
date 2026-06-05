@@ -2,3 +2,4 @@ coverage*
 *null-ls*
 /plex2pl
 .DS_Store
+/playlist.xml

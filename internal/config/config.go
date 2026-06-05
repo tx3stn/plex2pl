@@ -10,11 +10,20 @@ import (
 	"github.com/tx3stn/plex2pl/internal/flags"
 )
 
+const (
+	// FormatM3U is the output format value for m3u playlist files.
+	FormatM3U = "m3u"
+	// FormatJellyfin is the output format value for jellyfin native playlist files.
+	FormatJellyfin = "jellyfin"
+)
+
 // Config represents the configuration options required to be defined in the config file.
 type Config struct {
-	PlexServerURL string `json:"plexServerUrl"`
-	PlexAuthToken string `json:"plexAuthToken"`
-	OutDirectory  string `json:"outDirectory"`
+	PlexServerURL       string `json:"plexServerUrl"`
+	PlexAuthToken       string `json:"plexAuthToken"`
+	OutDirectory        string `json:"outDirectory"`
+	OutputFormat        string `json:"outputFormat"`
+	JellyfinOwnerUserID string `json:"jellyfinOwnerUserId"`
 }
 
 // Get returns the config read from the file.
@@ -51,6 +60,14 @@ func Get(fileFlag string) (Config, error) {
 	var conf Config
 	if err = json.Unmarshal(content, &conf); err != nil {
 		return Config{}, fmt.Errorf("%w: %w", ErrUnmarshalingConfig, err)
+	}
+
+	if conf.OutputFormat == "" {
+		return Config{}, ErrMissingOutputFormat
+	}
+
+	if conf.OutputFormat != FormatM3U && conf.OutputFormat != FormatJellyfin {
+		return Config{}, fmt.Errorf("%w: %s", ErrInvalidOutputFormat, conf.OutputFormat)
 	}
 
 	return conf, nil

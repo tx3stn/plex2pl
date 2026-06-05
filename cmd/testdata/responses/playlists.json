@@ -1,0 +1,77 @@
+{
+	"MediaContainer": {
+		"size": 5,
+		"Metadata": [
+			{
+				"ratingKey": "10",
+				"key": "/playlists/10/items",
+				"guid": "com.plexapp.agents.none://10",
+				"type": "playlist",
+				"title": "2026 jamz",
+				"summary": "",
+				"smart": false,
+				"playlistType": "audio",
+				"composite": "/playlists/10/composite/1778930758",
+				"icon": "playlist://image.smart",
+				"duration": 1764000,
+				"leafCount": 4,
+				"addedAt": 1778930758,
+				"updatedAt": 1778930758
+			},
+			{
+				"ratingKey": "11",
+				"key": "/playlists/11/items",
+				"guid": "com.plexapp.agents.none://11",
+				"type": "playlist",
+				"title": "empty playlist",
+				"summary": "",
+				"smart": false,
+				"playlistType": "audio",
+				"leafCount": 0,
+				"addedAt": 1778930758,
+				"updatedAt": 1778930758
+			},
+			{
+				"ratingKey": "12",
+				"key": "/playlists/12/items",
+				"guid": "com.plexapp.agents.none://12",
+				"type": "playlist",
+				"title": "movie mondays",
+				"summary": "",
+				"smart": false,
+				"playlistType": "video",
+				"leafCount": 5,
+				"addedAt": 1778930758,
+				"updatedAt": 1778930758
+			},
+			{
+				"ratingKey": "13",
+				"key": "/playlists/13/items",
+				"guid": "com.plexapp.agents.none://13",
+				"type": "playlist",
+				"title": "repeat offenders",
+				"summary": "",
+				"smart": false,
+				"playlistType": "audio",
+				"duration": 750000,
+				"leafCount": 2,
+				"addedAt": 1779000000,
+				"updatedAt": 1779000000
+			},
+			{
+				"ratingKey": "14",
+				"key": "/playlists/14/items",
+				"guid": "com.plexapp.agents.none://14",
+				"type": "playlist",
+				"title": "rock/metal mix",
+				"summary": "",
+				"smart": false,
+				"playlistType": "audio",
+				"duration": 192000,
+				"leafCount": 1,
+				"addedAt": 1779100000,
+				"updatedAt": 1779100000
+			}
+		]
+	}
+}

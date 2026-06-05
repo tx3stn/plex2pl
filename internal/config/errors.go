@@ -10,6 +10,12 @@ const (
 	ErrReadingConfigFile
 	// ErrUnmarshalingConfig is the error returned when unmarshalling the config file fails.
 	ErrUnmarshalingConfig
+	// ErrInvalidOutputFormat is the error returned when the configured output format is
+	// not a supported value.
+	ErrInvalidOutputFormat
+	// ErrMissingOutputFormat is the error returned when no output format is set in the
+	// config file.
+	ErrMissingOutputFormat
 )
 
 // Error returns the error message string.
@@ -23,6 +29,12 @@ func (e Error) Error() string {
 
 	case ErrUnmarshalingConfig:
 		return "error unmarshaling config file"
+
+	case ErrInvalidOutputFormat:
+		return "invalid output format"
+
+	case ErrMissingOutputFormat:
+		return "no output format set in config file"
 
 	default:
 		return "unknown error"

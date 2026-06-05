@@ -3,5 +3,6 @@
 	"plexServerUrl": "http://localhost:32400",
 	"plexAuthToken": "YOUR-PLEX-TOKEN",
 	"outDirectory": "/media/username/music/00-playlists",
+	"outputFormat": "m3u",
 	"verbose": false
 }

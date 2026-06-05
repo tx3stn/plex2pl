@@ -3,6 +3,6 @@
 	"plexServerUrl": "",
 	"plexAuthToken": "",
 	"outDirectory": "",
-	"outputFormat": "m3u",
+	"outputFormat": "wav",
 	"verbose": false
 }
