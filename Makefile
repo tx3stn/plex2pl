@@ -26,7 +26,7 @@ install: build
 .PHONY: lint
 lint:
 	@golangci-lint fmt ${DIR}
-	@golangci-lint run --fix -v ${DIR}
+	@golangci-lint run --fix ${DIR}
 
 .PHONY: lint-schema
 lint-schema:
@@ -35,9 +35,5 @@ lint-schema:
 
 .PHONY: test
 test:
-	@CGO_ENABLED=1 go test -race -cover ${DIR}
-
-.PHONY: testsum
-testsum:
-	@CGO_ENABLED=1 gotestsum --format-hide-empty-pkg --format pkgname-and-test-fails -- -race ${DIR}
+	@CGO_ENABLED=1 gotestsum --format-hide-empty-pkg --format pkgname-and-test-fails -- -race -cover ${DIR}
 
