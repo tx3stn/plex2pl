@@ -39,5 +39,5 @@ test:
 
 .PHONY: testsum
 testsum:
-	@CGO_ENABLED=1 gotestsum --format-hide-empty-pkg --format pkgname-and-test-fails -- -race ${DIR}
+	@CGO_ENABLED=1 gotestsum --format-hide-empty-pkg --format pkgname-and-test-fails -- -race -cover ${DIR}
 

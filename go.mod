@@ -1,6 +1,6 @@
 module github.com/tx3stn/plex2pl
 
-go 1.24.2
+go 1.26
 
 require github.com/stretchr/testify v1.11.1
 
