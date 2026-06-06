@@ -98,8 +98,8 @@ Any path separator characters (`/` or `\`) in a playlist title are replaced with
 
 The playlist format to generate. Supported values:
 
-* `m3u` - `.m3u` files created directly inside `outDirectory`.
 * `jellyfin` - jellyfin native playlists, created as `outDirectory/<playlist title>/playlist.xml` to match the layout of jellyfin's `data/playlists` directory.
+* `m3u` - `.m3u` files created directly inside `outDirectory`.
 
 The jellyfin format includes the genres of the tracks in the playlist.
 If the genres are not returned in the playlist response from Plex, the track metadata is queried in a single batch request per playlist to resolve them.
