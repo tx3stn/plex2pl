@@ -1,0 +1,42 @@
+{
+	"MediaContainer": {
+		"size": 1,
+		"Metadata": [
+			{
+				"ratingKey": "204",
+				"key": "/library/metadata/204",
+				"type": "track",
+				"title": "Slaughterhouse",
+				"grandparentTitle": "Chat Pile",
+				"parentTitle": "God's Country",
+				"index": 1,
+				"parentIndex": 1,
+				"duration": 192000,
+				"addedAt": 1779100000,
+				"Genre": [
+					{ "tag": "Noise Rock" }
+				],
+				"Media": [
+					{
+						"id": 1204,
+						"duration": 192000,
+						"bitrate": 320,
+						"audioChannels": 2,
+						"audioCodec": "mp3",
+						"container": "mp3",
+						"Part": [
+							{
+								"id": 1304,
+								"key": "/library/parts/1304/file.mp3",
+								"duration": 192000,
+								"file": "/music/Chat Pile/God's Country (2022)/01 - Slaughterhouse.mp3",
+								"size": 7680000,
+								"container": "mp3"
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

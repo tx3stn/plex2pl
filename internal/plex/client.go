@@ -4,6 +4,7 @@ package plex
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/tx3stn/plex2pl/internal/api"
 	"github.com/tx3stn/plex2pl/internal/logger"
@@ -82,6 +83,27 @@ func (c Client) GetPlaylistItems(ctx context.Context, playlistID string) ([]Play
 	return resp.MediaContainer.Metadata, nil
 }
 
+// GetTracksMetadata fetches the full metadata for a batch of tracks in a single
+// request, which includes details not returned by the playlist items endpoint, such
+// as the track genres.
+// Tracks plex returns no metadata for are absent from the result.
+func (c Client) GetTracksMetadata(
+	ctx context.Context,
+	ratingKeys []string,
+) ([]PlaylistItem, error) {
+	resp, err := api.FetchJSON[getPlaylistItemsResponse](
+		ctx,
+		c.httpClient,
+		c.url("library/metadata/"+strings.Join(ratingKeys, ",")),
+		c.log,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp.MediaContainer.Metadata, nil
+}
+
 func (c Client) url(path string) string {
 	return fmt.Sprintf("%s/%s?X-Plex-Token=%s", c.serverURL, path, c.authToken)
 }
@@ -95,8 +117,8 @@ type getPlaylistsResponse struct {
 	} `json:"mediaContainer"`
 }
 
-// getPlaylistItemResponse is the response wrapper for the GetPlaylistItems request to align
-// with how plex returns the data.
+// getPlaylistItemResponse is the response wrapper for the GetPlaylistItems and
+// GetTracksMetadata requests to align with how plex returns the data.
 type getPlaylistItemsResponse struct {
 	MediaContainer struct {
 		Size     int            `json:"size,omitempty"`

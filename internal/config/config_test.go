@@ -65,12 +65,33 @@ func TestGet(t *testing.T) {
 			fileFlag:      "testdata/xdg/valid/plex2pl/config.json",
 			xdgEnvValue:   "",
 			expectedError: nil,
-			expected:      config.Config{},
+			expected:      config.Config{OutputFormat: config.FormatM3U},
 		},
 		"ReturnsErrorIfFileFlagFileIsNotFound": {
 			fileFlag:      "testdata/xdg/valid/plex2pl/foo.json",
 			xdgEnvValue:   "testdata/xdg/valid",
 			expectedError: config.ErrConfigNotFound,
+			expected:      config.Config{},
+		},
+		"ReturnsConfigWithJellyfinOutputFormat": {
+			fileFlag:      "testdata/xdg/jellyfin/plex2pl/config.json",
+			xdgEnvValue:   "",
+			expectedError: nil,
+			expected: config.Config{
+				OutputFormat:        config.FormatJellyfin,
+				JellyfinOwnerUserID: "0f474ccb9a614c91b69466f2bbb31974",
+			},
+		},
+		"ReturnsErrorWhenOutputFormatIsInvalid": {
+			fileFlag:      "testdata/xdg/badformat/plex2pl/config.json",
+			xdgEnvValue:   "",
+			expectedError: config.ErrInvalidOutputFormat,
+			expected:      config.Config{},
+		},
+		"ReturnsErrorWhenOutputFormatIsMissing": {
+			fileFlag:      "testdata/xdg/missingformat/plex2pl/config.json",
+			xdgEnvValue:   "",
+			expectedError: config.ErrMissingOutputFormat,
 			expected:      config.Config{},
 		},
 	}

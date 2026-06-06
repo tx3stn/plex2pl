@@ -3,11 +3,11 @@ package m3u
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/tx3stn/plex2pl/internal/fsname"
 	"github.com/tx3stn/plex2pl/internal/plex"
 )
 
@@ -43,21 +43,22 @@ func (p *Playlist) WriteFile(dirPath string) error {
 
 	output += outputSb38.String()
 
-	outPath := filepath.Join(dirPath, p.Title+".m3u")
+	outPath := filepath.Join(dirPath, fsname.Sanitize(p.Title)+".m3u")
 
 	file, err := os.Create(filepath.Clean(outPath))
 	if err != nil {
 		return fmt.Errorf("error creating m3u file: %w", err)
 	}
 
-	defer func() {
-		if err := file.Close(); err != nil {
-			log.Fatalf("error closing file: %s", err.Error())
-		}
-	}()
-
 	if _, err := file.WriteString(output); err != nil {
+		// The write error takes precedence over any close error.
+		_ = file.Close()
+
 		return fmt.Errorf("error writing m3u file: %w", err)
+	}
+
+	if err := file.Close(); err != nil {
+		return fmt.Errorf("error closing m3u file: %w", err)
 	}
 
 	return nil

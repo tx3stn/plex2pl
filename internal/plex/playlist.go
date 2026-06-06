@@ -21,10 +21,18 @@ type Playlist struct {
 
 // PlaylistItem is the strcuture of the detailed information about a playlist.
 type PlaylistItem struct {
+	RatingKey        string          `json:"ratingKey,omitempty"`
 	Title            string          `json:"title,omitempty"`
 	GrandParentTitle string          `json:"grandParentTitle,omitempty"`
 	ParentTitle      string          `json:"parentTitle,omitempty"`
+	Genre            []Tag           `json:"genre,omitempty"`
 	Media            []PlaylistMedia `json:"media,omitempty"`
+}
+
+// Tag represents the tag entries plex includes in metadata responses, e.g. the
+// 'Genre' section of a track's metadata.
+type Tag struct {
+	Tag string `json:"tag,omitempty"`
 }
 
 // PlaylistMedia represents the data in the 'Media' section of the 'Metadata' for the

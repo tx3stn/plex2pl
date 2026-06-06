@@ -1,0 +1,78 @@
+{
+	"MediaContainer": {
+		"size": 2,
+		"Metadata": [
+			{
+				"ratingKey": "201",
+				"key": "/library/metadata/201",
+				"type": "track",
+				"title": "Jane Doe",
+				"grandparentTitle": "Converge",
+				"parentTitle": "Jane Doe",
+				"index": 12,
+				"parentIndex": 1,
+				"duration": 690000,
+				"addedAt": 1778930100,
+				"Genre": [
+					{ "tag": "Metalcore" },
+					{ "tag": "Mathcore" }
+				],
+				"Media": [
+					{
+						"id": 1201,
+						"duration": 690000,
+						"bitrate": 320,
+						"audioChannels": 2,
+						"audioCodec": "mp3",
+						"container": "mp3",
+						"Part": [
+							{
+								"id": 1301,
+								"key": "/library/parts/1301/file.mp3",
+								"duration": 690000,
+								"file": "/music/Converge/Jane Doe (2001)/12 - Jane Doe.mp3",
+								"size": 27600000,
+								"container": "mp3"
+							}
+						]
+					}
+				]
+			},
+			{
+				"ratingKey": "203",
+				"key": "/library/metadata/203",
+				"type": "track",
+				"title": "The Saddest Day",
+				"grandparentTitle": "Converge",
+				"parentTitle": "Petitioning the Empty Sky",
+				"index": 1,
+				"parentIndex": 1,
+				"duration": 454000,
+				"addedAt": 1778930300,
+				"Genre": [
+					{ "tag": "Hardcore Punk" }
+				],
+				"Media": [
+					{
+						"id": 1203,
+						"duration": 454000,
+						"bitrate": 320,
+						"audioChannels": 2,
+						"audioCodec": "mp3",
+						"container": "mp3",
+						"Part": [
+							{
+								"id": 1303,
+								"key": "/library/parts/1303/file.mp3",
+								"duration": 454000,
+								"file": "/music/Converge/Petitioning the Empty Sky (1996)/01 - The Saddest Day.mp3",
+								"size": 18160000,
+								"container": "mp3"
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

@@ -5,29 +5,29 @@
   <em>Convert your plex playlists into other formats for use with other programs.</em>
 </p>
 
+Supported formats:
 
-Currently support formats:
-* `m3u`
-
-Upcoming:
 * `jellyfin` native
+* `m3u`
 
 ## Contents
 
-- [Why](#why)
-- [Install](#install)
-  - [Download from GitHub](#download-from-github)
-  - [Build it locally](#build-it-locally)
-  - [Run the Docker container](#run-the-docker-container)
-- [Configuring](#configuring)
-- [Usage](#usage)
-- [Running in Docker](#running-in-docker)
-- [References](#references)
+* [Why](#why)
+* [Install](#install)
+  * [Download from GitHub](#download-from-github)
+  * [Build it locally](#build-it-locally)
+  * [Run the Docker container](#run-the-docker-container)
+* [Configuring](#configuring)
+* [Usage](#usage)
+* [Running in Docker](#running-in-docker)
+* [References](#references)
 
 ## Why
 
-I use plexamp for listening to music, but have migrated all other media to Jellyfin.
-I wanted to manage my playlist via Plex, but have a compatible solution for other providers for switching in future, or trying out things like [FinAmp](https://github.com/jmshrv/finamp)
+I used to use plexamp for listening to music, but have migrated all other media to Jellyfin.
+
+I built [atolla](https://github.com/tx3stn/atolla) as I couldn't find a good plexamp
+alternative for Jellyfin, and wanted to migrate all of my existing plex playlists.
 
 ## Install
 
@@ -63,6 +63,7 @@ See [Running in Docker](#running-in-docker) for more details.
 All of the configuration required for `plex2pl` is found in the config file.
 
 The default expected locations for this are:
+
 * `$XDG_CONFIG_DIR/plex2pl/config.json`
 * `$HOME/.config/plex2pl/config.json`
 
@@ -74,6 +75,7 @@ plex2pl --config /my/custom/config/file/path/config.json
 
 > [!TIP]
 > To get in editor feedback/validation of your schema, add the following to the top of your json file:
+>
 > ``` json
 > "$schema": "https://raw.githubusercontent.com/tx3stn/plex2pl/refs/heads/main/.schema/schema.json"
 > ```
@@ -88,11 +90,31 @@ The token required to authenticate the requests against the Plex server.
 
 See [their docs on how you can find yours](https://support.plex.tv/articles/204059436).
 
-### `OutDirectory`
+### `outDirectory`
 
 The location of the directory you want to generate the playlists in.
 
 Each playlist will be created as a file with the playlist title as the name inside this directory.
+Any path separator characters (`/` or `\`) in a playlist title are replaced with `-` in the generated file and directory names.
+
+### `outputFormat`
+
+The playlist format to generate. Supported values:
+
+* `jellyfin` - jellyfin native playlists, created as `outDirectory/<playlist title>/playlist.xml` to match the layout of jellyfin's `data/playlists` directory.
+* `m3u` - `.m3u` files created directly inside `outDirectory`.
+
+The jellyfin format includes the genres of the tracks in the playlist.
+If the genres are not returned in the playlist response from Plex, the track metadata is queried in a single batch request per playlist to resolve them.
+If that request fails the playlist is still written, just without the missing genres.
+
+### `jellyfinOwnerUserId`
+
+The ID of the jellyfin user to set as the playlist owner when using the `jellyfin` output format.
+
+Optional, when not set no owner is written to the playlist file.
+
+You can find your user ID in the jellyfin admin dashboard under `Users`, it's the `userId` parameter in the URL when viewing a user's profile.
 
 ### `verbose`
 
@@ -121,6 +143,7 @@ The playlist files will be created in the directory you specified.
 ## Running in Docker
 
 You can run this inside a container, with a few considerations:
+
 1. **Volume mount your output directory**
 So you can create files in the correct place, and not just inside the container.
 
@@ -137,13 +160,13 @@ Putting this all together looks like this:
 
 ```bash
 docker run --rm -v "/media/dir/music/playlists:/media/dir/music/playlists" \
-	-v "/home/user/.config/plex2pl:/config" \
-	--network host \
-	-u $(id -u):$(id -g) \
-	ghcr.io/tx3stn/plex2pl:latest --config "/config/config.json"
+ -v "/home/user/.config/plex2pl:/config" \
+ --network host \
+ -u $(id -u):$(id -g) \
+ ghcr.io/tx3stn/plex2pl:latest --config "/config/config.json"
 ```
 
 ## References
 
-- https://github.com/XDGFX/PPP
-- https://blog.fileformat.com/audio/common-errors-when-creating-or-editing-extm3u-files-and-how-to-fix-them/
+* <https://github.com/XDGFX/PPP>
+* <https://blog.fileformat.com/audio/common-errors-when-creating-or-editing-extm3u-files-and-how-to-fix-them/>

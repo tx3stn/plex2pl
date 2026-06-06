@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Item>
+  <Added>05/18/2026 10:26:40</Added>
+  <LockData>false</LockData>
+  <LocalTitle>rock/metal mix</LocalTitle>
+  <RunningTime>3</RunningTime>
+  <Genres>
+    <Genre>Noise Rock</Genre>
+  </Genres>
+  <OwnerUserId>0f474ccb9a614c91b69466f2bbb31974</OwnerUserId>
+  <PlaylistItems>
+    <PlaylistItem>
+      <Path>/music/Chat Pile/God&#39;s Country (2022)/01 - Slaughterhouse.mp3</Path>
+    </PlaylistItem>
+  </PlaylistItems>
+  <Shares></Shares>
+  <PlaylistMediaType>Audio</PlaylistMediaType>
+</Item>

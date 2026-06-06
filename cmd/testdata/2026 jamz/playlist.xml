@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Item>
+  <Added>05/16/2026 11:25:58</Added>
+  <LockData>false</LockData>
+  <LocalTitle>2026 jamz</LocalTitle>
+  <RunningTime>29</RunningTime>
+  <Genres>
+    <Genre>Black Metal</Genre>
+    <Genre>Ecstatic Black Metal</Genre>
+    <Genre>Metalcore</Genre>
+    <Genre>Mathcore</Genre>
+    <Genre>Shoegaze</Genre>
+    <Genre>Hardcore Punk</Genre>
+  </Genres>
+  <OwnerUserId>0f474ccb9a614c91b69466f2bbb31974</OwnerUserId>
+  <PlaylistItems>
+    <PlaylistItem>
+      <Path>/music/Agriculture/The Spiritual Sound (2025)/02 - Bodhidharma.flac</Path>
+    </PlaylistItem>
+    <PlaylistItem>
+      <Path>/music/Converge/Jane Doe (2001)/12 - Jane Doe.mp3</Path>
+    </PlaylistItem>
+    <PlaylistItem>
+      <Path>/music/Agriculture/The Spiritual Sound (2025)/04 - My Garden.flac</Path>
+    </PlaylistItem>
+    <PlaylistItem>
+      <Path>/music/Converge/Petitioning the Empty Sky (1996)/01 - The Saddest Day.mp3</Path>
+    </PlaylistItem>
+  </PlaylistItems>
+  <Shares></Shares>
+  <PlaylistMediaType>Audio</PlaylistMediaType>
+</Item>

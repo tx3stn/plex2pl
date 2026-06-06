@@ -18,7 +18,16 @@
 			"type": "string"
 		},
 		"outDirectory": {
-			"description": "The output directory of the m3u files.",
+			"description": "The output directory of the playlist files.",
+			"type": "string"
+		},
+		"outputFormat": {
+			"description": "The playlist format to generate: 'm3u' files or 'jellyfin' native playlist.xml directories.",
+			"type": "string",
+			"enum": ["jellyfin", "m3u"]
+		},
+		"jellyfinOwnerUserId": {
+			"description": "The jellyfin user ID written as the playlist owner when using the 'jellyfin' output format.",
 			"type": "string"
 		},
 		"verbose": {
@@ -30,6 +39,7 @@
 		"plexServerUrl",
 		"plexAuthToken",
 		"outDirectory",
+		"outputFormat",
 		"verbose"
 	],
 	"additionalProperties": false
