@@ -26,6 +26,9 @@ Supported formats:
 
 I used to use plexamp for listening to music, but have migrated all other media to Jellyfin.
 
+I built [atolla](https://github.com/tx3stn/atolla) as I couldn't find a good plexamp
+alternative for Jellyfin, and wanted to migrate all of my existing plex playlists.
+
 ## Install
 
 ### Download from GitHub
