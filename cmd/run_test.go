@@ -1,10 +1,12 @@
 package cmd_test
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"sync"
 	"sync/atomic"
 	"testing"
 
@@ -52,7 +54,7 @@ func TestExecuteM3UFormat(t *testing.T) {
 	assert.Equal(t, int64(0), metadataRequests.Load(), "m3u format should not query track metadata")
 }
 
-func TestExecuteJellyfinFormat(t *testing.T) {
+func TestExecuteJellyfinXMLFormat(t *testing.T) {
 	t.Parallel()
 
 	var metadataRequests atomic.Int64
@@ -64,7 +66,7 @@ func TestExecuteJellyfinFormat(t *testing.T) {
 		PlexServerURL:       server.URL,
 		PlexAuthToken:       "test-token",
 		OutDirectory:        outDir,
-		OutputFormat:        config.FormatJellyfin,
+		OutputFormat:        config.FormatJellyfinXML,
 		JellyfinOwnerUserID: "0f474ccb9a614c91b69466f2bbb31974",
 	}
 
@@ -98,7 +100,7 @@ func TestExecuteJellyfinFormat(t *testing.T) {
 	)
 }
 
-func TestExecuteJellyfinFormatWritesPlaylistsWhenMetadataRequestFails(t *testing.T) {
+func TestExecuteJellyfinXMLFormatWritesPlaylistsWhenMetadataRequestFails(t *testing.T) {
 	t.Parallel()
 
 	var metadataRequests atomic.Int64
@@ -113,7 +115,7 @@ func TestExecuteJellyfinFormatWritesPlaylistsWhenMetadataRequestFails(t *testing
 		PlexServerURL:       server.URL,
 		PlexAuthToken:       "test-token",
 		OutDirectory:        outDir,
-		OutputFormat:        config.FormatJellyfin,
+		OutputFormat:        config.FormatJellyfinXML,
 		JellyfinOwnerUserID: "0f474ccb9a614c91b69466f2bbb31974",
 	}
 
@@ -139,6 +141,135 @@ func TestExecuteJellyfinFormatWritesPlaylistsWhenMetadataRequestFails(t *testing
 		metadataRequests.Load(),
 		"failed lookups should not be cached, so the tracks are retried for the next playlist",
 	)
+}
+
+func TestExecuteJellyfinAPIFormat(t *testing.T) {
+	t.Parallel()
+
+	var metadataRequests atomic.Int64
+
+	plexServer := newMockPlexServer(t, func(w http.ResponseWriter, _ *http.Request) {
+		metadataRequests.Add(1)
+		http.Error(w, "genres should not be queried in api mode", http.StatusInternalServerError)
+	})
+
+	// track file path (from the plex stubs) -> fake jellyfin item id.
+	itemIndex := map[string]string{
+		"/music/Agriculture/The Spiritual Sound (2025)/02 - Bodhidharma.flac":       "id-bodhidharma",
+		"/music/Agriculture/The Spiritual Sound (2025)/04 - My Garden.flac":         "id-mygarden",
+		"/music/Chat Pile/God's Country (2022)/01 - Slaughterhouse.mp3":             "id-slaughterhouse",
+		"/music/Converge/Jane Doe (2001)/12 - Jane Doe.mp3":                         "id-janedoe",
+		"/music/Converge/Petitioning the Empty Sky (1996)/01 - The Saddest Day.mp3": "id-saddestday",
+	}
+
+	var mu sync.Mutex
+
+	created := map[string][]string{}
+
+	// "repeat offenders" already exists, so it should be skipped.
+	jellyfinServer := newMockJellyfinServer(
+		t,
+		itemIndex,
+		[]string{"repeat offenders"},
+		&mu,
+		created,
+	)
+
+	cfg := config.Config{
+		PlexServerURL:       plexServer.URL,
+		PlexAuthToken:       "test-token",
+		OutputFormat:        config.FormatJellyfin,
+		JellyfinServerURL:   jellyfinServer.URL,
+		JellyfinAPIKey:      "test-key",
+		JellyfinOwnerUserID: "owner-123",
+	}
+
+	log := logger.NewBasic(false)
+	p := plex.NewClient(&http.Client{}, plexServer.URL, "test-token", log)
+
+	require.NoError(t, cmd.Execute(t.Context(), cfg, p, log))
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	createdNames := make([]string, 0, len(created))
+	for name := range created {
+		createdNames = append(createdNames, name)
+	}
+
+	// "repeat offenders" is skipped (already exists), "empty playlist" has no items,
+	// and "movie mondays" is a video playlist, so only these two are created.
+	assert.ElementsMatch(t, []string{"2026 jamz", "rock/metal mix"}, createdNames)
+	assert.ElementsMatch(
+		t,
+		[]string{"id-bodhidharma", "id-mygarden", "id-janedoe", "id-saddestday"},
+		created["2026 jamz"],
+	)
+	assert.Equal(t, []string{"id-slaughterhouse"}, created["rock/metal mix"])
+	assert.Equal(t, int64(0), metadataRequests.Load(), "api mode should not query track genres")
+}
+
+// newMockJellyfinServer creates a test server that responds like the jellyfin API:
+// GET /Items returns the audio item index or the existing playlists depending on the
+// IncludeItemTypes query, and POST /Playlists records the created playlist by name.
+func newMockJellyfinServer(
+	t *testing.T,
+	itemIndex map[string]string,
+	existingPlaylists []string,
+	mu *sync.Mutex,
+	created map[string][]string,
+) *httptest.Server {
+	t.Helper()
+
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/Items", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, `MediaBrowser Token="test-key"`, r.Header.Get("Authorization"))
+
+		items := []map[string]string{}
+
+		switch r.URL.Query().Get("IncludeItemTypes") {
+		case "Audio":
+			for path, id := range itemIndex {
+				items = append(items, map[string]string{"Id": id, "Path": path})
+			}
+		case "Playlist":
+			for _, name := range existingPlaylists {
+				items = append(items, map[string]string{"Id": "existing-" + name, "Name": name})
+			}
+		default:
+			http.Error(w, "unexpected item type", http.StatusBadRequest)
+
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		assert.NoError(t, json.NewEncoder(w).Encode(map[string]any{"Items": items}))
+	})
+
+	mux.HandleFunc("/Playlists", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, http.MethodPost, r.Method)
+		assert.Equal(t, `MediaBrowser Token="test-key"`, r.Header.Get("Authorization"))
+
+		var body struct {
+			Name string   `json:"Name"`
+			IDs  []string `json:"Ids"`
+		}
+
+		assert.NoError(t, json.NewDecoder(r.Body).Decode(&body))
+
+		mu.Lock()
+		created[body.Name] = body.IDs
+		mu.Unlock()
+
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"Id":"created-id"}`))
+	})
+
+	server := httptest.NewServer(mux)
+	t.Cleanup(server.Close)
+
+	return server
 }
 
 // newMockPlexServer creates a test server that responds like a plex server using

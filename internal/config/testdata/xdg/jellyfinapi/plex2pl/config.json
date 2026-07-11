@@ -3,7 +3,9 @@
 	"plexServerUrl": "",
 	"plexAuthToken": "",
 	"outDirectory": "",
-	"outputFormat": "jellyfin-xml",
+	"outputFormat": "jellyfin",
+	"jellyfinServerUrl": "http://jellyfin.local",
+	"jellyfinApiKey": "test-api-key",
 	"jellyfinOwnerUserId": "0f474ccb9a614c91b69466f2bbb31974",
 	"verbose": false
 }

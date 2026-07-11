@@ -16,6 +16,15 @@ const (
 	// ErrMissingOutputFormat is the error returned when no output format is set in the
 	// config file.
 	ErrMissingOutputFormat
+	// ErrMissingJellyfinServerURL is the error returned when the jellyfin output format
+	// is set but no jellyfin server url is configured.
+	ErrMissingJellyfinServerURL
+	// ErrMissingJellyfinAPIKey is the error returned when the jellyfin output format is
+	// set but no jellyfin API key is configured.
+	ErrMissingJellyfinAPIKey
+	// ErrMissingJellyfinOwnerUserID is the error returned when the jellyfin output format
+	// is set but no jellyfin owner user id is configured.
+	ErrMissingJellyfinOwnerUserID
 )
 
 // Error returns the error message string.
@@ -35,6 +44,15 @@ func (e Error) Error() string {
 
 	case ErrMissingOutputFormat:
 		return "no output format set in config file"
+
+	case ErrMissingJellyfinServerURL:
+		return "jellyfin output format requires jellyfinServerUrl to be set"
+
+	case ErrMissingJellyfinAPIKey:
+		return "jellyfin output format requires jellyfinApiKey to be set"
+
+	case ErrMissingJellyfinOwnerUserID:
+		return "jellyfin output format requires jellyfinOwnerUserId to be set"
 
 	default:
 		return "unknown error"

@@ -24,6 +24,10 @@ linters:
           - err113
           - gochecknoglobals
           - goconst
+          - tagliatelle  # test structs mirror external API shapes.
+      - path: 'internal\/jellyfin\/client\.go'
+        linters:
+          - tagliatelle  # jellyfin's API uses PascalCase json keys.
       - text: 'unused-parameter: parameter \S+ seems to be unused, consider removing or renaming it as _'
         linters:
           - revive
