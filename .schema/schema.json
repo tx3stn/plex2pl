@@ -22,12 +22,20 @@
 			"type": "string"
 		},
 		"outputFormat": {
-			"description": "The playlist format to generate: 'm3u' files or 'jellyfin' native playlist.xml directories.",
+			"description": "The playlist format to generate: 'jellyfin' creates editable playlists directly via the jellyfin API, 'jellyfin-xml' writes read-only native playlist.xml directories, 'm3u' writes .m3u files.",
 			"type": "string",
-			"enum": ["jellyfin", "m3u"]
+			"enum": ["jellyfin", "jellyfin-xml", "m3u"]
+		},
+		"jellyfinServerUrl": {
+			"description": "The URL of your jellyfin server. Required for the 'jellyfin' output format.",
+			"type": "string"
+		},
+		"jellyfinApiKey": {
+			"description": "A jellyfin API key (created in Dashboard > API Keys). Required for the 'jellyfin' output format.",
+			"type": "string"
 		},
 		"jellyfinOwnerUserId": {
-			"description": "The jellyfin user ID written as the playlist owner when using the 'jellyfin' output format.",
+			"description": "The jellyfin user ID set as the playlist owner. Required for the 'jellyfin' output format, optional for 'jellyfin-xml'.",
 			"type": "string"
 		},
 		"verbose": {
@@ -39,8 +47,7 @@
 		"plexServerUrl",
 		"plexAuthToken",
 		"outDirectory",
-		"outputFormat",
-		"verbose"
+		"outputFormat"
 	],
 	"additionalProperties": false
 }

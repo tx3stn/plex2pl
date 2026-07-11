@@ -7,7 +7,7 @@
 
 Supported formats:
 
-* `jellyfin` native
+* `jellyfin`
 * `m3u`
 
 ## Contents
@@ -80,6 +80,23 @@ plex2pl --config /my/custom/config/file/path/config.json
 > "$schema": "https://raw.githubusercontent.com/tx3stn/plex2pl/refs/heads/main/.schema/schema.json"
 > ```
 
+### `outputFormat`
+
+The playlist format to generate. Supported values:
+
+* `jellyfin` - creates playlists directly in jellyfin via the API.
+These are real, owned playlists that the owner can edit, reorder and delete from the jellyfin UI. This is the recommended way to create jellyfin playlists. Requires [`jellyfinServerUrl`](#jellyfinserverurl), [`jellyfinApiKey`](#jellyfinapikey) and [`jellyfinOwnerUserId`](#jellyfinowneruserid). Does not use `outDirectory`.
+* `jellyfin-xml` - writes jellyfin native `playlist.xml` files to
+`outDirectory/<playlist title>/playlist.xml`.
+Jellyfin picks these up, but treats them as read-only so you won't be able to make any edits.
+* `m3u` - `.m3u` files created directly inside `outDirectory`.
+
+The `jellyfin` and `jellyfin-xml` formats include the genres of the tracks in the playlist.
+If the genres are not returned in the playlist response from Plex, the track metadata is queried in a single batch request per playlist to resolve them.
+If that request fails the playlist is still created, just without the missing genres.
+
+The `jellyfin` format is idempotent: playlists whose name already exists in jellyfin are skipped, so re-running won't create duplicates.
+
 ### `plexServerUrl`
 
 The url used to access your plex server, from the host device `plex2pl` is running on.
@@ -94,25 +111,30 @@ See [their docs on how you can find yours](https://support.plex.tv/articles/2040
 
 The location of the directory you want to generate the playlists in.
 
+Used by the `jellyfin-xml` and `m3u` formats.
 Each playlist will be created as a file with the playlist title as the name inside this directory.
 Any path separator characters (`/` or `\`) in a playlist title are replaced with `-` in the generated file and directory names.
 
-### `outputFormat`
+### `jellyfinServerUrl`
 
-The playlist format to generate. Supported values:
+The url used to access your jellyfin server, from the host device `plex2pl` is running on.
 
-* `jellyfin` - jellyfin native playlists, created as `outDirectory/<playlist title>/playlist.xml` to match the layout of jellyfin's `data/playlists` directory.
-* `m3u` - `.m3u` files created directly inside `outDirectory`.
+Required for the `jellyfin` output format, unused otherwise.
 
-The jellyfin format includes the genres of the tracks in the playlist.
-If the genres are not returned in the playlist response from Plex, the track metadata is queried in a single batch request per playlist to resolve them.
-If that request fails the playlist is still written, just without the missing genres.
+### `jellyfinApiKey`
+
+An API key used to authenticate against the jellyfin API.
+
+Create one in the jellyfin admin dashboard under `Dashboard > API Keys`.
+
+Required for the `jellyfin` output format, unused otherwise.
 
 ### `jellyfinOwnerUserId`
 
-The ID of the jellyfin user to set as the playlist owner when using the `jellyfin` output format.
+The ID of the jellyfin user to set as the playlist owner.
 
-Optional, when not set no owner is written to the playlist file.
+For the `jellyfin` format this is **required** - it's the user the playlist is created for and who can then edit it.
+For the `jellyfin-xml` format it's optional; when not set no owner is written to the playlist file.
 
 You can find your user ID in the jellyfin admin dashboard under `Users`, it's the `userId` parameter in the URL when viewing a user's profile.
 

@@ -13,8 +13,12 @@ import (
 const (
 	// FormatM3U is the output format value for m3u playlist files.
 	FormatM3U = "m3u"
-	// FormatJellyfin is the output format value for jellyfin native playlist files.
+	// FormatJellyfin is the output format value for creating playlists directly in
+	// jellyfin via its API, which produces editable, owned playlists.
 	FormatJellyfin = "jellyfin"
+	// FormatJellyfinXML is the output format value for writing jellyfin native
+	// playlist.xml files to disk. These are read-only once jellyfin imports them.
+	FormatJellyfinXML = "jellyfin-xml"
 )
 
 // Config represents the configuration options required to be defined in the config file.
@@ -23,6 +27,8 @@ type Config struct {
 	PlexAuthToken       string `json:"plexAuthToken"`
 	OutDirectory        string `json:"outDirectory"`
 	OutputFormat        string `json:"outputFormat"`
+	JellyfinServerURL   string `json:"jellyfinServerUrl"`
+	JellyfinAPIKey      string `json:"jellyfinApiKey"`
 	JellyfinOwnerUserID string `json:"jellyfinOwnerUserId"`
 }
 
@@ -66,7 +72,14 @@ func Get(fileFlag string) (Config, error) {
 		return Config{}, ErrMissingOutputFormat
 	}
 
-	if conf.OutputFormat != FormatM3U && conf.OutputFormat != FormatJellyfin {
+	switch conf.OutputFormat {
+	case FormatM3U, FormatJellyfinXML:
+		// no additional config required for these formats.
+	case FormatJellyfin:
+		if err := conf.validateJellyfinAPI(); err != nil {
+			return Config{}, err
+		}
+	default:
 		return Config{}, fmt.Errorf("%w: %s", ErrInvalidOutputFormat, conf.OutputFormat)
 	}
 
@@ -106,4 +119,19 @@ func FindConfigFile() string {
 	}
 
 	return ""
+}
+
+// validateJellyfinAPI ensures the config required to create playlists via the jellyfin
+// API is present.
+func (c Config) validateJellyfinAPI() error {
+	switch {
+	case c.JellyfinServerURL == "":
+		return ErrMissingJellyfinServerURL
+	case c.JellyfinAPIKey == "":
+		return ErrMissingJellyfinAPIKey
+	case c.JellyfinOwnerUserID == "":
+		return ErrMissingJellyfinOwnerUserID
+	default:
+		return nil
+	}
 }

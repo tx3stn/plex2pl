@@ -1,0 +1,10 @@
+{
+	"$schema": "",
+	"plexServerUrl": "",
+	"plexAuthToken": "",
+	"outDirectory": "",
+	"outputFormat": "jellyfin",
+	"jellyfinServerUrl": "http://jellyfin.local",
+	"jellyfinApiKey": "test-api-key",
+	"verbose": false
+}

@@ -73,14 +73,43 @@ func TestGet(t *testing.T) {
 			expectedError: config.ErrConfigNotFound,
 			expected:      config.Config{},
 		},
-		"ReturnsConfigWithJellyfinOutputFormat": {
+		"ReturnsConfigWithJellyfinXMLOutputFormat": {
 			fileFlag:      "testdata/xdg/jellyfin/plex2pl/config.json",
 			xdgEnvValue:   "",
 			expectedError: nil,
 			expected: config.Config{
-				OutputFormat:        config.FormatJellyfin,
+				OutputFormat:        config.FormatJellyfinXML,
 				JellyfinOwnerUserID: "0f474ccb9a614c91b69466f2bbb31974",
 			},
+		},
+		"ReturnsConfigWithJellyfinAPIOutputFormat": {
+			fileFlag:      "testdata/xdg/jellyfinapi/plex2pl/config.json",
+			xdgEnvValue:   "",
+			expectedError: nil,
+			expected: config.Config{
+				OutputFormat:        config.FormatJellyfin,
+				JellyfinServerURL:   "http://jellyfin.local",
+				JellyfinAPIKey:      "test-api-key",
+				JellyfinOwnerUserID: "0f474ccb9a614c91b69466f2bbb31974",
+			},
+		},
+		"ReturnsErrorWhenJellyfinServerURLMissing": {
+			fileFlag:      "testdata/xdg/jellyfinnourl/plex2pl/config.json",
+			xdgEnvValue:   "",
+			expectedError: config.ErrMissingJellyfinServerURL,
+			expected:      config.Config{},
+		},
+		"ReturnsErrorWhenJellyfinAPIKeyMissing": {
+			fileFlag:      "testdata/xdg/jellyfinnokey/plex2pl/config.json",
+			xdgEnvValue:   "",
+			expectedError: config.ErrMissingJellyfinAPIKey,
+			expected:      config.Config{},
+		},
+		"ReturnsErrorWhenJellyfinOwnerUserIDMissing": {
+			fileFlag:      "testdata/xdg/jellyfinnoowner/plex2pl/config.json",
+			xdgEnvValue:   "",
+			expectedError: config.ErrMissingJellyfinOwnerUserID,
+			expected:      config.Config{},
 		},
 		"ReturnsErrorWhenOutputFormatIsInvalid": {
 			fileFlag:      "testdata/xdg/badformat/plex2pl/config.json",
