@@ -1,0 +1,4 @@
+# The image only consumes the prebuilt binary, so deny everything and allow
+# it back in. Nothing else needs to enter the build context.
+*
+!plex2pl

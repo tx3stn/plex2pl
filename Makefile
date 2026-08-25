@@ -1,5 +1,7 @@
 BINARY_NAME=plex2pl
 DIR ?= ./...
+GOARCH ?= $(shell go env GOARCH)
+GOOS ?= $(shell go env GOOS)
 PWD ?= $(shell pwd)
 VERSION ?= $(shell head -n 1 VERSION)
 
@@ -9,11 +11,12 @@ endef
 
 .PHONY: build
 build:
-	@CGO_ENABLED=0 go build -ldflags "-s -w -X github.com/tx3stn/plex2pl/cmd.Version=${VERSION}" -o ${BINARY_NAME}
+	@CGO_ENABLED=0 GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags "-s -w -X github.com/tx3stn/plex2pl/cmd.Version=${VERSION}" -o ${BINARY_NAME}
 
 .PHONY: build-image
-build-image:
-	@docker --debug build --tag ${BINARY_NAME}:local .
+build-image: GOOS=linux
+build-image: build
+	@docker build --platform linux/${GOARCH} --tag ${BINARY_NAME}:local .
 
 .PHONY: generate-mocks
 generate-mocks:
